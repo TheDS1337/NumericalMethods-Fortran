@@ -25,6 +25,7 @@
         Xanc(1) = Xnouv(1)
         Xanc(2) = Xnouv(2)
 
+!       Critere d arret
         IF (epsilon .GE. SQRT(norm)) GOTO 3
  1    CONTINUE
 
