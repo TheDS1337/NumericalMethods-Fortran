@@ -63,19 +63,19 @@ end do
 do j = 0, iterations_t - 1, 1    
     do i = 1, dim, 1
         if (i == 1) then 
-            A(1, 1) = 1. + 2 * r
-            A(1, 2) = -r
-            A(1, 3) = 0.
-            A(2, 1) = -r
-            A(2, 2) = 1. + 2 * r
-            A(2, 3) = -r
-            A(3, 1) = 0.
-            A(3, 2) = -r
-            A(3, 3) = 1. + 2 * r
-
-            B(1) = F(1, j)
-            B(2) = F(2, j)
-            B(3) = F(3, j)     
+            do l = 1, dim, 1                                
+                do m = 1, dim, 1
+                    if ((m == l - 1 .AND. l /= 1) .OR. (m == l + 1 .AND. l /= dim)) then
+                        A(l, m) = -r
+                    else if (m == l) then
+                        A(l, m) = 1 + 2 * r                    
+                    else
+                        A(l, m) = 0.
+                    end if
+                end do
+                
+                B(l) = F(l, j)
+            end do  
         end if 
 
         ! Calcule de P(n)
@@ -101,7 +101,7 @@ do j = 0, iterations_t - 1, 1
         B(:) = matmul(P(:, :), B(:))
     end do
 
-    do m = 1, iterations_x - 1, 1 
+    do m = 1, dim, 1 
         F(m, j + 1) = B(m)        
     end do     
 end do
